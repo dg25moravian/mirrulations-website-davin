@@ -29,6 +29,7 @@ const ResultsSection = ({ results, onPageChange }) => {
           </p>
           <p><strong>Matching Comments:</strong> {docket.comments.match}/{docket.comments.total}</p>
           <p><strong>Date Modified:</strong> {new Date(docket.dateModified).toLocaleDateString()}</p>
+          <p><strong>Summary:</strong> {docket.summary}</p>
         </div>
       ))}
       <PageSwitcher
