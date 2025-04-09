@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "/styles/styles.css";
 import ResultsSection from "./results";
 
 const API_GATEWAY_URL = import.meta.env.VITE_GATEWAY_API_URL || GATEWAY_API_URL;
 
-console.log("API_GATEWAY_URL:", API_GATEWAY_URL);
-
 const SearchPage = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState(searchParams.get("q") || "");
+  const [pageNumber, setPageNumber] = useState(parseInt(searchParams.get("page")) || 0);
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -23,8 +23,18 @@ const SearchPage = () => {
     }
   }, [navigate]);
 
-  const fetchResults = async (pageNumber) => {
-    if (!searchTerm.trim()) {
+  // Fetch results when search params change
+  useEffect(() => {
+    const q = searchParams.get("q");
+    const page = searchParams.get("page");
+    
+    if (q) {
+      fetchResults(q, parseInt(page) || 0);
+    }
+  }, [searchParams]);
+
+  const fetchResults = async (term, pageNum = 0) => {
+    if (!term?.trim()) {
       setError("Please enter a search term.");
       setResults(null);
       return;
@@ -35,8 +45,8 @@ const SearchPage = () => {
 
     try {
       const query_params = new URLSearchParams();
-      query_params.append("searchTerm", searchTerm);
-      query_params.append("pageNumber", pageNumber);
+      query_params.append("searchTerm", term);
+      query_params.append("pageNumber", pageNum);
       query_params.append("refreshResults", true);
       query_params.append("sortParams", JSON.stringify({
         "desc": true,
@@ -71,6 +81,8 @@ const SearchPage = () => {
       }
 
       setResults(data);
+      setSearchTerm(term);
+      setPageNumber(pageNum);
     } catch (err) {
       setError(err.message);
       setResults(null);
@@ -80,14 +92,20 @@ const SearchPage = () => {
   };
 
   const handleSearch = () => {
-    fetchResults(0);
+    setError(null); // Clear any previous error
+    const term = searchTerm.trim();
+    if (term) {
+      setSearchParams({ q: term, page: 0 });
+      fetchResults(term, 0); // <- Force fetch
+    } else {
+      setError("Please enter a search term.");
+    }
   };
-
-  const handlePageChange = (pageNumber) => {
-    console.log(pageNumber)
-    fetchResults(pageNumber);
+  const handlePageChange = (newPageNumber) => {
+    setSearchParams({ q: searchTerm, page: newPageNumber });
+    fetchResults(searchTerm, newPageNumber); // <- Force fetch
   };
-
+  
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSearch();

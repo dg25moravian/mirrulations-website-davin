@@ -7,13 +7,16 @@ const PageSwitcher = ({ current_page, total_pages, onPageChange }) => {
   const maxPagesToShow = total_pages < 10 ? total_pages : 10;
   const pageNumbers = [];
   
-  // Calculate initial start and end pages
-  let startPage = Math.max(0, current_page - Math.floor((maxPagesToShow - 1) / 2));
+  // Convert to 0-based for calculations
+  const currentPageZeroBased = current_page - 1;
+  
+  // Calculate initial start and end pages (0-based)
+  let startPage = Math.max(0, currentPageZeroBased - Math.floor((maxPagesToShow - 1) / 2));
   let endPage = startPage + maxPagesToShow - 1;
 
   // Adjust if we're at the end
-  if (endPage >= maxPagesToShow) {
-    endPage = maxPagesToShow - 1;
+  if (endPage >= total_pages) {
+    endPage = total_pages - 1;
     startPage = Math.max(0, endPage - (maxPagesToShow - 1));
   }
 
@@ -22,13 +25,11 @@ const PageSwitcher = ({ current_page, total_pages, onPageChange }) => {
   }
 
   const arrowButtons = [
-    { text: "<<", page: 0, disabled: current_page === 0 },
+    { text: "<<", page: 0, disabled: currentPageZeroBased === 0 },
     { text: "<", page: current_page - 1, disabled: current_page === 0 },
     { text: ">", page: current_page + 1, disabled: current_page >= maxPagesToShow - 1 },
     { text: ">>", page: maxPagesToShow - 1, disabled: current_page >= maxPagesToShow - 1 },
   ];
-
-
 
   return (
     <section id="page_switcher_section" className="container mt-4">
@@ -39,7 +40,7 @@ const PageSwitcher = ({ current_page, total_pages, onPageChange }) => {
               <li className={`page-item ${arrow.disabled ? "disabled" : ""}`} key={arrow.text}>
                 <button
                   className="page-link"
-                  onClick={() => onPageChange(arrow.page)}
+                  onClick={() => onPageChange(arrow.page + 1)} // Convert back to 1-based
                   disabled={arrow.disabled}
                 >
                   {arrow.text}
@@ -49,15 +50,15 @@ const PageSwitcher = ({ current_page, total_pages, onPageChange }) => {
 
             {pageNumbers.map((number) => (
               <li
-                className={`page-item ${number === current_page ? "active" : ""}`}
+                className={`page-item ${number === currentPageZeroBased ? "active" : ""}`}
                 key={number}
               >
                 <button
                   className="page-link"
-                  onClick={() => onPageChange(number)}
-                  disabled={number === current_page}
+                  onClick={() => onPageChange(number + 1)} // Convert back to 1-based
+                  disabled={number === currentPageZeroBased}
                 >
-                  {number + 1}
+                  {number + 1} {/* Display as 1-based */}
                 </button>
               </li>
             ))}
@@ -66,7 +67,7 @@ const PageSwitcher = ({ current_page, total_pages, onPageChange }) => {
               <li className={`page-item ${arrow.disabled ? "disabled" : ""}`} key={arrow.text}>
                 <button
                   className="page-link"
-                  onClick={() => onPageChange(arrow.page)}
+                  onClick={() => onPageChange(arrow.page + 1)} // Convert back to 1-based
                   disabled={arrow.disabled}
                 >
                   {arrow.text}

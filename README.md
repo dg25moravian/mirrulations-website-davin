@@ -1,9 +1,6 @@
 # Mirrulations Website Repo
 **Authors:** Seth Coleman, Davin Glynn, Trevor Gray, Nathan Hajel, Terrell Nelson, Giovanny Teran, and Brandon Yang
 
-My test repo
-
-
 This repository contains the source code for the Mirrulations Project website. The Mirrulations Project aims to provide a user-friendly interface for searching and retrieving data from [regulations.gov](https://www.regulations.gov/). This website interacts with an AWS API Gateway to fetch and display data based on user input.
 
 ### <ins>**How to Set up the Local Development Enviroment**<ins>
