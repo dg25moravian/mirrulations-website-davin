@@ -11,9 +11,10 @@
   "dependencies": {
     "@types/cookie": "^0.6.0",
     "amazon-cognito-identity-js": "^6.3.12",
-    "bootstrap": "^5.3.3",
+    "bootstrap": "^5.3.5",
     "cookie": "^1.0.2",
     "react": "^19.0.0",
+    "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
     "react-oidc-context": "^3.2.0",
     "react-router-dom": "^7.4.0",
