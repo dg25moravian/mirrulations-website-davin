@@ -6,7 +6,7 @@ function generate_date_html(name, date, color) {
   const dateString = date ? new Date(date).toLocaleDateString() : "Unknown"
   return (
     <tr>
-      <td><strong style={{color}}>{name}:</strong>&emsp;</td> <td>{dateString}</td>
+      <td><strong style={{color}}>{name}:</strong>&emsp;</td><td>{dateString}</td>
     </tr>
   )
 }
@@ -17,6 +17,20 @@ function TimelineModal({ timelineDates }) {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  // This is not a great fix, maybe fix later
+  let checkedTimelineDates
+  if (!timelineDates) {
+    checkedTimelineDates = {
+      dateModified: null,
+      dateCreated: null,
+      dateEffective: null,
+      dateClosed: null,
+      dateCommentsOpened: null
+    }
+  } else {
+    checkedTimelineDates = timelineDates
+  }
 
   return (
     <>
@@ -31,11 +45,11 @@ function TimelineModal({ timelineDates }) {
         <Modal.Body>
           <table>
             <tbody>
-              {generate_date_html("Date Modified", timelineDates.dateModified, "black")}
-              {generate_date_html("Date Created", timelineDates.dateCreated, "purple")}
-              {generate_date_html("Date Effective", timelineDates.dateEffective, "blue")}
-              {generate_date_html("Date Closed", timelineDates.dateClosed, "red")}
-              {generate_date_html("Date Comments Opened", timelineDates.dateCommentsOpened, "green")}
+              {generate_date_html("Date Modified", checkedTimelineDates.dateModified, "black")}
+              {generate_date_html("Date Created", checkedTimelineDates.dateCreated, "purple")}
+              {generate_date_html("Date Effective", checkedTimelineDates.dateEffective, "blue")}
+              {generate_date_html("Date Closed", checkedTimelineDates.dateClosed, "red")}
+              {generate_date_html("Date Comments Opened", checkedTimelineDates.dateCommentsOpened, "green")}
             </tbody>
           </table>
         </Modal.Body>
