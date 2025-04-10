@@ -44,6 +44,8 @@ const PageSwitcher = ({ current_page, total_pages, onPageChange }) => {
                   className="page-link"
                   onClick={() => {
                     console.log("arrow.page:", arrow.page);
+                    console.log("Expected Output:", Number(current_page - 1));
+                    console.log("current_page:", current_page);
                     onPageChange(arrow.page);
                   }}
                   disabled={arrow.disabled}
