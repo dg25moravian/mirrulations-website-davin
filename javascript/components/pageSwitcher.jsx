@@ -23,14 +23,13 @@ const PageSwitcher = ({ current_page, total_pages, onPageChange }) => {
 
     const currentPageNum = Number(current_page);
     const totalPagesNum = Number(total_pages);
-   //console.log("currentPageNum:", currentPageNum);
 
 
   const arrowButtons = [
     { text: "<<", page: 1, disabled: currentPageNum === 1 },
     { text: "<", page: Number(current_page - 1), disabled: currentPageNum === 1 },
-    { text: ">", page: Number(current_page) + 1, disabled: currentPageNum + 1 ===  totalPagesNum},
-    { text: ">>", page: Number(total_pages), disabled: currentPageNum + 1 ===  totalPagesNum},
+    { text: ">", page: Number(current_page) + 1, disabled: currentPageNum ===  totalPagesNum},
+    { text: ">>", page: Number(total_pages), disabled: currentPageNum ===  totalPagesNum},
   ];
 
   return (
@@ -43,9 +42,6 @@ const PageSwitcher = ({ current_page, total_pages, onPageChange }) => {
                 <button
                   className="page-link"
                   onClick={() => {
-                    console.log("arrow.page:", arrow.page);
-                    console.log("Expected Output:", current_page);
-                    console.log("current_page:", current_page);
                     onPageChange(arrow.page);
                   }}
                   disabled={arrow.disabled}
@@ -63,7 +59,6 @@ const PageSwitcher = ({ current_page, total_pages, onPageChange }) => {
                 <button
                   className="page-link"
                   onClick={() => {
-                    console.log("number:", number);
                     onPageChange(number);
                   }}
 
@@ -79,7 +74,6 @@ const PageSwitcher = ({ current_page, total_pages, onPageChange }) => {
                 <button
                   className="page-link"
                   onClick={() => {
-                    console.log("arrow.page:", arrow.page);
                     onPageChange(arrow.page);
                   }}
                   disabled={arrow.disabled}
