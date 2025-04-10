@@ -55,7 +55,12 @@ const PageSwitcher = ({ current_page, total_pages, onPageChange }) => {
               >
                 <button
                   className="page-link"
-                  onClick={() => onPageChange(number)}
+                  onClick={() => {
+                    console.log("number:", number);
+                    console.log("currentPageNum:", currentPageNum);
+                    onPageChange(number);
+                  }}
+                  
                   disabled={Number(number) === currentPageNum}
                 >
                   {number}
