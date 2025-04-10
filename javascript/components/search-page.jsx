@@ -9,7 +9,7 @@ const API_GATEWAY_URL = import.meta.env.VITE_GATEWAY_API_URL || GATEWAY_API_URL;
 const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(searchParams.get("q") || "");
-  const [pageNumber, setPageNumber] = useState(parseInt(searchParams.get("page")) || 0);
+  const [pageNumber, setPageNumber] = useState(parseInt(searchParams.get("page")) || 1);
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -26,12 +26,12 @@ const SearchPage = () => {
   // Fetch results when search params change
   useEffect(() => {
     const q = searchParams.get("q");
-    const page = searchParams.get("page");
+    const page = parseInt(searchParams.get("page")) || 1;
     
     if (q) {
-      fetchResults(q, parseInt(page) || 0);
+      fetchResults(q, page - 1); // Convert to 0-based for API
     }
-  }, [searchParams]);
+}, [searchParams]);
 
   const fetchResults = async (term, pageNum = 0) => {
     if (!term?.trim()) {
@@ -92,20 +92,21 @@ const SearchPage = () => {
   };
 
   const handleSearch = () => {
-    setError(null); // Clear any previous error
+    setError(null);
     const term = searchTerm.trim();
     if (term) {
-      setSearchParams({ q: term, page: 0 });
-      fetchResults(term, 0); // <- Force fetch
+      setSearchParams({ q: term, page: 1 });
+      fetchResults(term, 0); // 0-based for API
     } else {
       setError("Please enter a search term.");
     }
-  };
+    };
   const handlePageChange = (newPageNumber) => {
-    setSearchParams({ q: searchTerm, page: newPageNumber });
-    fetchResults(searchTerm, newPageNumber); // <- Force fetch
-  };
-  
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Add this line
+    setSearchParams({ q: searchTerm, page: newPageNumber + 1 }); // 1-based for URL
+    fetchResults(searchTerm, newPageNumber); // 0-based for API
+    };
+
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSearch();
@@ -119,6 +120,24 @@ const SearchPage = () => {
     navigate("/auth");
   };
 
+  const LoadingMessage = () => {
+    const [dots, setDots] = useState("");
+  
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setDots(prev => (prev.length < 3 ? prev + "." : ""));
+      }, 500);
+      return () => clearInterval(interval);
+    }, []);
+  
+    return (
+      <p id="loading-section" className="text-center mt-3">
+        Loading{dots} (this is harder than it looks!)
+      </p>
+    );
+  };
+  
+  
   return (
     <div className="search-container p-0">
       <h1 className="logo">Mirrulations</h1>
@@ -149,10 +168,9 @@ const SearchPage = () => {
         <span> is licensed under </span><a href="https://creativecommons.org/licenses/by-nc-nd/2.0/">CC BY-NC-ND 2.0</a>
       </p>
 
-      {loading && <p id="loading-section" className="text-center mt-3">Loading... (this is harder than it looks!) </p>}
+      {loading && <LoadingMessage />}
       {error && <p id="error-loader" className="text-center mt-3">{error}</p>}
-
-      {results && <ResultsSection results={results} onPageChange={handlePageChange} />}
+      {results && <ResultsSection results={results} onPageChange={handlePageChange}/>}
     </div>
   );
 };
