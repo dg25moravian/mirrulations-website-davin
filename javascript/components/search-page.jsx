@@ -102,6 +102,7 @@ const SearchPage = () => {
     }
     };
   const handlePageChange = (newPageNumber) => {
+    console.log("newPageNumber:", newPageNumber);
     window.scrollTo({ top: 0, behavior: 'smooth' }); // Add this line
     setSearchParams({ q: searchTerm, page: newPageNumber + 1 }); // 1-based for URL
     fetchResults(searchTerm, newPageNumber); // 0-based for API

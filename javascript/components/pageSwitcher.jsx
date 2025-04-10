@@ -23,7 +23,7 @@ const PageSwitcher = ({ current_page, total_pages, onPageChange }) => {
 
     const currentPageNum = Number(current_page);
     const totalPagesNum = Number(total_pages);
-    console.log("currentPageNum:", currentPageNum);
+   //console.log("currentPageNum:", currentPageNum);
 
 
   const arrowButtons = [
