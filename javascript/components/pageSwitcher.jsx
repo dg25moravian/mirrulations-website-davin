@@ -25,8 +25,8 @@ const PageSwitcher = ({ current_page, total_pages, onPageChange }) => {
     const totalPagesNum = Number(total_pages);
 
   const arrowButtons = [
-    { text: "<<", page: 1, disabled: currentPageNum === 0 },
-    { text: "<", page: Number(current_page) - 1, disabled: currentPageNum === 0 },
+    { text: "<<", page: 1, disabled: currentPageNum === 1 },
+    { text: "<", page: Number(current_page - 1), disabled: currentPageNum === 1 },
     { text: ">", page: Number(current_page) + 1, disabled: currentPageNum + 1 ===  totalPagesNum},
     { text: ">>", page: Number(total_pages), disabled: currentPageNum + 1 ===  totalPagesNum},
   ];
