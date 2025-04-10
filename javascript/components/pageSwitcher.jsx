@@ -42,7 +42,10 @@ const PageSwitcher = ({ current_page, total_pages, onPageChange }) => {
               <li className={`page-item ${arrow.disabled ? "disabled" : ""}`} key={arrow.text}>
                 <button
                   className="page-link"
-                  onClick={() => onPageChange(arrow.page)}
+                  onClick={() => {
+                    console.log("arrow.page:", arrow.page);
+                    onPageChange(arrow.page);
+                  }}
                   disabled={arrow.disabled}
                 >
                   {arrow.text}
@@ -73,7 +76,10 @@ const PageSwitcher = ({ current_page, total_pages, onPageChange }) => {
               <li className={`page-item ${arrow.disabled ? "disabled" : ""}`} key={arrow.text}>
                 <button
                   className="page-link"
-                  onClick={() => onPageChange(arrow.page)}
+                  onClick={() => {
+                    console.log("arrow.page:", arrow.page);
+                    onPageChange(arrow.page);
+                  }}
                   disabled={arrow.disabled}
                 >
                   {arrow.text}
