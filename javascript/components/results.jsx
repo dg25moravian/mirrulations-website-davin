@@ -28,8 +28,17 @@ const ResultsSection = ({ results, onPageChange }) => {
             </a>
           </p>
           <p><strong>Matching Comments:</strong> {docket.comments.match}/{docket.comments.total}</p>
-          <p><strong>Date Modified:</strong> {new Date(docket.dateModified).toLocaleDateString()}</p>
-          <p><strong>Summary:</strong> {docket.summary}</p>
+          <p><strong>Matching Attachments:</strong> {docket.attachments ? `${docket.attachments.match}/${docket.attachments.total}` : "Unknown"}</p>
+          <p>
+            <strong>Summary:</strong> {docket.summary ? (docket.summary.length > 200 ? `${docket.summary.substring(0, 200)}...` : docket.summary) : "No summary available"}
+          </p>
+          <p>
+            <strong>Date Modified:</strong> { docket.timelineDates && docket.timelineDates.dateModified ? new Date(docket.timelineDates.dateModified).toLocaleDateString() : docket.dateModified ? new Date(docket.dateModified).toLocaleDateString() : "Unknown"}
+            <strong>&emsp;Date Created:</strong> { docket.timelineDates && docket.timelineDates.dateCreated ? new Date(docket.timelineDates.dateCreated).toLocaleDateString() : "Unknown"}
+            <strong>&emsp;Date Effective:</strong> { docket.timelineDates && docket.timelineDates.dateEffective ? new Date(docket.timelineDates.dateEffective).toLocaleDateString() : "Unknown" }
+            <strong>&emsp;Date Closed:</strong> { docket.timelineDates && docket.timelineDates.dateClosed ? new Date(docket.timelineDates.dateClosed).toLocaleDateString() : "Unknown" }
+            <strong>&emsp;Date Comments Opened:</strong> { docket.timelineDates && docket.timelineDates.dateCommentsOpened ? new Date(docket.timelineDates.dateCommentsOpened).toLocaleDateString() : "Unknown" }
+          </p>
         </div>
       ))}
       <PageSwitcher
