@@ -23,6 +23,8 @@ const PageSwitcher = ({ current_page, total_pages, onPageChange }) => {
 
     const currentPageNum = Number(current_page);
     const totalPagesNum = Number(total_pages);
+    console.log("currentPageNum:", currentPageNum);
+
 
   const arrowButtons = [
     { text: "<<", page: 1, disabled: currentPageNum === 1 },
@@ -57,10 +59,9 @@ const PageSwitcher = ({ current_page, total_pages, onPageChange }) => {
                   className="page-link"
                   onClick={() => {
                     console.log("number:", number);
-                    console.log("currentPageNum:", currentPageNum);
                     onPageChange(number);
                   }}
-                  
+
                   disabled={Number(number) === currentPageNum}
                 >
                   {number}
